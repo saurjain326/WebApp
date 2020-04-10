@@ -1,14 +1,10 @@
-node {
-
-stage('SCM Checkout'){
+node{
+   stage('SCM Checkout'){
      git 'https://github.com/saurjain326/WebApp'
    }
-stage("build & SonarQube analysis") {          
-              
-			  withSonarQubeEnv('sonarqubelocal') {
-			  // Get maven home path
-				def mvnHome =  tool name: 'maven', type: 'maven'
-                 sh '${mvnHome}/bin/mvn clean package sonar:sonar'
-              }
-          }
-      }
+   stage('Compile-Package'){
+      // Get maven home path
+      def mvnHome =  tool name: 'maven', type: 'maven'   
+      sh "${mvnHome}/bin/mvn clean package sonar:sonar"
+   }
+   }
