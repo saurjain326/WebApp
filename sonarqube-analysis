@@ -11,7 +11,7 @@ node{
    stage('SonarQube Analysis') {
         def mvnHome =  tool name: 'maven', type: 'maven'
         withSonarQubeEnv('sonarqubelocal') { 
-        sh "$SONAR_MAVEN_GOAL-Dsonar.host.url=$SONAR_HOST_URL"
+        sh "sh "${mvnHome}/bin/mvn clean deploy sonar:sonar""
          }
     }
     
