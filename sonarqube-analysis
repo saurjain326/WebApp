@@ -6,7 +6,7 @@ node{
    stage('SonarQube Analysis') {
         def mvnHome =  tool name: 'maven', type: 'maven'
         withSonarQubeEnv(credentialsId: 'sonarqubelocalA', installationName: 'sonarqubelocalA') { 
-          sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.test.exclusions=**/test/java/servlet/createpage_junit.java"
+          sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.test.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin"
         }
     }
 }
