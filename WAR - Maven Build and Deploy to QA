@@ -1,0 +1,16 @@
+node{
+   stage('SCM Checkout'){
+     git 'https://github.com/saurjain326/WebApp'
+   }
+   
+   stage('Maven Build'){
+        def mvnHome = tool name: 'maven', type: 'maven'
+		sh "${mvnHome}/bin/mvn clean package"
+   }
+   
+   stage('Deploy QA'){
+
+		deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://3.14.88.11:8080/')], contextPath: 'QAWebapp', war: '**/*.war'
+   
+	}
+	}   
