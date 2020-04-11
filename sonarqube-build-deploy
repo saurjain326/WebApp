@@ -43,7 +43,7 @@ node{
 	
   try {
 	stage('Deploy Production'){
-		deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://18.224.52.24:8080/')], contextPath: 'ProdWebapp', war: '**/*.war'
+		deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://18.224.52.244:8080/')], contextPath: 'ProdWebapp', war: '**/*.war'
    		notifySuccessful()
 		}
 	  }
