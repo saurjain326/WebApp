@@ -5,7 +5,7 @@ node{
      
    stage('SonarQube Analysis') {
         def mvnHome =  tool name: 'maven', type: 'maven'
-        withSonarQubeEnv(credentialsId: 'sonarqubelocalC', installationName: 'sonarqubeC') { 
+        withSonarQubeEnv(credentialsId: 'sonarqubelocalD', installationName: 'sonarqubelocalD') { 
           sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.test.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin"
         }
     }
@@ -35,6 +35,14 @@ node{
 		buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
 		server.publishBuildInfo buildInfo
     }
+	
+	stage('Functional Test') {
+                  def mvnHome = tool name: 'maven', type: 'maven'
+                  dir ('functionaltest') {
+                sh "${mvnHome}/bin/mvn test"
+          }
+          publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+      }
 	
 	stage ('Performace testing'){
     blazeMeterTest( credentialsId: 'BlazeMeter', testId: '7911015.taurus', workspaceId: '468385')
