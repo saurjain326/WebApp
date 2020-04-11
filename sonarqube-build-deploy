@@ -40,7 +40,22 @@ node{
     blazeMeterTest( credentialsId: 'BlazeMeter', testId: '7911015.taurus', workspaceId: '468385')
   }
 	
+	
+  try {
 	stage('Deploy Production'){
-		deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://18.224.52.244:8080/')], contextPath: 'ProdWebapp', war: '**/*.war'   
+		deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://18.224.52.244:8080/')], contextPath: 'ProdWebapp', war: '**/*.war'
+   		}
+	  }
+	catch (e) {  
+		currentBuild.result = "FAILED"  
+		notifyFailed()  
+		throw e
+		}
 	}
+	
+def notifySuccessful() { 
+slackSend (color: '#00FF00', message: "Deploy Production SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})") 
+} 
+def notifyFailed() { 
+slackSend (color: '#FF0000', message: "Deploy Production FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})") 
 }
